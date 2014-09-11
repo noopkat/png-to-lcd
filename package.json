@@ -1,0 +1,29 @@
+{
+  "name": "png-to-lcd",
+  "version": "0.0.0",
+  "description": "convert png image data into an lcd convertible framebuffer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/noopkat/png-to-lcd.git"
+  },
+  "keywords": [
+    "lcd",
+    "png",
+    "framebuffer",
+    "oled",
+    "bitmap"
+  ],
+  "author": "Suz Hinton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/noopkat/png-to-lcd/issues"
+  },
+  "homepage": "https://github.com/noopkat/png-to-lcd",
+  "dependencies": {
+    "png-js": "^0.1.1"
+  }
+}
