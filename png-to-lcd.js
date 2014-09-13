@@ -1,6 +1,9 @@
+/**
+ * png-to-lcd
+ * exports framebuffer for use with common OLED displays
+ */
 var pngparse = require('pngparse');
-var buffer = new Buffer(4096);
-buffer.fill(0x00);
+var floydSteinberg = require('../floyd-steinberg');
 
 module.exports = png_to_lcd;
 
@@ -12,21 +15,70 @@ function png_to_lcd(filename, dither, callback) {
 
     var depth = image.channels,
         pixels = image.data,
-        pixelCount = pixels.length;
+        pixelCount = pixels.length,
+        height = image.height,
+        width = image.width,
+        threshold = 0.75,
+        unpackedBuffer = [];
 
-    // TODO: conditional here calculating bit dpeth
+    var buffer = new Buffer(width * height);
+    buffer.fill(0x00);
 
-    for (var i = 0; i < pixelCount; i += 1) {
-      console.log(pixels[i])
-      // if any of the pixels returns 0, it's 'false' and will set the pixel to 0, otherwise set it to 1
-      // TODO: replace this with a smart threshold pixel color decider 
-      //buffer[i/4] = (pixels[i] || pixels[i+1] || pixels[i+2]) ? 1 : 0;
-
-      // TODO: put in floyd-steinberg, based on dither bool conditional from module params
-      //if (dither) {
-        //etc etc...
-      //}
+    // if dithering is preferred, run this on the pixel data first to transform RGB vals
+    if (dither) {
+      pixels = floydSteinberg(image).data;
     }
+
+    for (var y = 0; y < height; y++) {
+      for (var x = 0; x < width; x++) {
+        var index = (width * y + x) << 2;
+        var value = parseInt(image.getPixel(x, y), 16);
+
+        var r = value.substr(0,1),
+            g = value.substr(2,3),
+            b = value.substr(4,5);
+
+        // if dithering is NOT preferred
+        if (!dither) {
+          // luminosity adjustments
+          var lumR = 0.299,
+              lumG = 0.587,
+              lumB = 0.114;
+          
+          // average out to a grey
+          value = Math.floor(((r * lumR) + (g * lumG) + (b * lumB)) / 3);
+        } else {
+          value = Math.floor((r + g + b) / 3);
+        }
+
+        // weed out RGB depth to make just black or white pixel
+        if (value > threshold * value) {
+          value = 1;
+        } else {
+          value = 0;
+        }
+        unpackedBuffer[index] = value;
+      }
+    } 
+
+    // time to pack the buffer
+    for (var i = 0; i < unpackedBuffer.length; i++) {
+      var x = Math.floor(i % width);
+      var y = Math.floor(i / width);
+      var byte = 0,
+          page = Math.floor(y / 8),
+          pageShift = 0x01 << (y - 8 * page);
+
+      // is the first page?
+      (page === 0) ? byte = x : byte = x + width * page; 
+      
+      if (unpackedBuffer[i] === 0) {
+        buffer[byte] &= ~pageShift;
+      } else {
+        buffer[byte] |= pageShift;
+      }
+    }
+    
     callback(null, buffer);
   });
 }
