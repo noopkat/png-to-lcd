@@ -48,7 +48,8 @@ function png_to_lcd(filename, dither, callback) {
           // average out to a grey
           value = Math.floor(((r * lumR) + (g * lumG) + (b * lumB)) / 3);
         } else {
-          value = Math.floor((r + g + b) / 3);
+          // dithered result has same value for every color channel (0 or 255), so r is fine
+          value = r;
         }
 
         // weed out RGB depth to make just black or white pixel
@@ -73,8 +74,10 @@ function png_to_lcd(filename, dither, callback) {
       (page === 0) ? byte = x : byte = x + width * page; 
       
       if (unpackedBuffer[i] === 0) {
+        // black or 'off' pixel
         buffer[byte] &= ~pageShift;
       } else {
+        // white or 'on' pixel
         buffer[byte] |= pageShift;
       }
     }
