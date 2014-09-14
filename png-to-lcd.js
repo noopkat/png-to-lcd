@@ -33,10 +33,11 @@ function png_to_lcd(filename, dither, callback) {
       for (var x = 0; x < width; x++) {
         var index = (width * y + x) << 2;
         var value = parseInt(image.getPixel(x, y), 16);
+        var valueStr = value.toString();
 
-        var r = value.substr(0,1),
-            g = value.substr(2,3),
-            b = value.substr(4,5);
+        var r = parseInt(valueStr.substr(0,1), 10),
+            g = parseInt(valueStr.substr(2,3), 10),
+            b = parseInt(valueStr.substr(4,5), 10);
 
         // if dithering is NOT preferred
         if (!dither) {
