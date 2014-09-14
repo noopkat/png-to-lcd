@@ -12,10 +12,10 @@ function createImageData(image) {
 
   var l = image.data.length;
   var pos = 0;
-  for (var x = 0; x<image.width; x++) {
-    for (var y = 0; y<image.height; y++) {
-      buf.writeUInt32BE(image.readPixel(x, y), pos);
-      pos+=4;
+  for (var y = 0; y < image.height; y++) {
+    for (var x = 0; x < image.width; x++) {
+      buf.writeUInt32BE(image.getPixel(x, y), pos);
+      pos += 4;
     }
   }
 
@@ -26,7 +26,7 @@ function createImageData(image) {
 
 function png_to_lcd(filename, dither, callback) {
 
-  pngparse(filename, function(err, img) {
+  pngparse.parseFile(filename, function(err, img) {
     if (err) {
       return callback(err);
     }
@@ -45,8 +45,7 @@ function png_to_lcd(filename, dither, callback) {
     var buffer = new Buffer((width * height) / 8);
     buffer.fill(0x00);
 
-    // yes, really.
-    parrot.data = image;
+    
 
     // if dithering is preferred, run this on the pixel data first to transform RGB vals
     if (dither) {
