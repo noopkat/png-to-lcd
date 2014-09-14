@@ -21,7 +21,7 @@ function png_to_lcd(filename, dither, callback) {
         threshold = 0.75,
         unpackedBuffer = [];
 
-    var buffer = new Buffer(width * height);
+    var buffer = new Buffer((width * height) / 8);
     buffer.fill(0x00);
 
     // if dithering is preferred, run this on the pixel data first to transform RGB vals
@@ -31,7 +31,7 @@ function png_to_lcd(filename, dither, callback) {
 
     for (var y = 0; y < height; y++) {
       for (var x = 0; x < width; x++) {
-        var index = (width * y + x) << 2;
+        var index = (width * y + x);
         var value = parseInt(image.getPixel(x, y), 16);
         var valueStr = value.toString();
 
@@ -50,11 +50,11 @@ function png_to_lcd(filename, dither, callback) {
           value = Math.floor(((r * lumR) + (g * lumG) + (b * lumB)) / 3);
         } else {
           // dithered result has same value for every color channel (0 or 255), so r is fine
-          value = r;
+          value = ((r + g + b) / 3);
         }
-
+        
         // weed out RGB depth to make just black or white pixel
-        if (value > threshold * value) {
+        if (value > 2000) {
           value = 1;
         } else {
           value = 0;
@@ -70,6 +70,7 @@ function png_to_lcd(filename, dither, callback) {
       var byte = 0,
           page = Math.floor(y / 8),
           pageShift = 0x01 << (y - 8 * page);
+      console.log('thresh ', x + ', ' + y, unpackedBuffer[i]);
 
       // is the first page?
       (page === 0) ? byte = x : byte = x + width * page; 
@@ -77,6 +78,7 @@ function png_to_lcd(filename, dither, callback) {
       if (unpackedBuffer[i] === 0) {
         // black or 'off' pixel
         buffer[byte] &= ~pageShift;
+        
       } else {
         // white or 'on' pixel
         buffer[byte] |= pageShift;
