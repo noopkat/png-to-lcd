@@ -9,10 +9,6 @@ module.exports = png_to_lcd;
 
 function png_to_lcd(filename, dither, callback) {
 
-  // create a new buffer that will be filled with pixel bytes and then returned
-  var buffer = new Buffer((width * height) / 8);
-  buffer.fill(0x00);
-
   // pngjs is a little special snowflake (special = annoying)
   var parrot = pngjs.load(filename);
   parrot.decode(function(image) {
@@ -24,6 +20,10 @@ function png_to_lcd(filename, dither, callback) {
         threshold = 120,
         unpackedBuffer = [],
         depth = 4;
+
+    // create a new buffer that will be filled with pixel bytes and then returned
+    var buffer = new Buffer((width * height) / 8);
+    buffer.fill(0x00);
 
     // yes, really.
     parrot.data = image;
@@ -48,7 +48,7 @@ function png_to_lcd(filename, dither, callback) {
         } else {
           pixelVal = 0;
         }
-        
+
       // push to unpacked buffer list
       unpackedBuffer[i/depth] = pixelVal;
 
