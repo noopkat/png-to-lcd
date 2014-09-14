@@ -3,17 +3,37 @@
  * exports framebuffer for use with common OLED displays
  */
 var floydSteinberg = require('../floyd-steinberg');
-var pngjs = require('png-js');
+var pngparse = require('pngparse');
 
 module.exports = png_to_lcd;
 
+function createImageData(image) {
+  var buf = new Buffer(image.width * image.height * 4);
+
+  var l = image.data.length;
+  var pos = 0;
+  for (var x = 0; x<image.width; x++) {
+    for (var y = 0; y<image.height; y++) {
+      buf.writeUInt32BE(image.readPixel(x, y), pos);
+      pos+=4;
+    }
+  }
+
+  image.data = buf;
+
+  return image;
+}
+
 function png_to_lcd(filename, dither, callback) {
 
-  // pngjs is a little special snowflake (special = annoying)
-  var parrot = pngjs.load(filename);
-  parrot.decode(function(image) {
-    
-    var pixels = image,
+  pngparse(filename, function(err, img) {
+    if (err) {
+      return callback(err);
+    }
+
+    var parrot = createImageData(img);
+
+    var pixels = parrot.data,
         height = parrot.height,
         width = parrot.width,
         alpha = parrot.hasAlphaChannel,
