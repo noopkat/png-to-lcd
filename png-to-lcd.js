@@ -2,75 +2,66 @@
  * png-to-lcd
  * exports framebuffer for use with common OLED displays
  */
-var pngparse = require('pngparse');
 var floydSteinberg = require('../floyd-steinberg');
+var pngjs = require('png-js');
 
 module.exports = png_to_lcd;
 
 function png_to_lcd(filename, dither, callback) {
-  pngparse.parseFile(filename, function(err, image) {
-    if (err) {
-      return cb(err);
-    }
 
-    var depth = image.channels,
-        pixels = image.data,
-        pixelCount = pixels.length,
-        height = image.height,
-        width = image.width,
-        threshold = 0.75,
-        unpackedBuffer = [];
+  // create a new buffer that will be filled with pixel bytes and then returned
+  var buffer = new Buffer((width * height) / 8);
+  buffer.fill(0x00);
 
-    var buffer = new Buffer((width * height) / 8);
-    buffer.fill(0x00);
+  // pngjs is a little special snowflake (special = annoying)
+  var parrot = pngjs.load(filename);
+  parrot.decode(function(image) {
+    
+    var pixels = image,
+        height = parrot.height,
+        width = parrot.width,
+        alpha = parrot.hasAlphaChannel,
+        threshold = 120,
+        unpackedBuffer = [],
+        depth = 4;
+
+    // yes, really.
+    parrot.data = image;
 
     // if dithering is preferred, run this on the pixel data first to transform RGB vals
     if (dither) {
-      pixels = floydSteinberg(image).data;
+      floydSteinberg(parrot);
     }
 
-    for (var y = 0; y < height; y++) {
-      for (var x = 0; x < width; x++) {
-        var index = (width * y + x);
-        var value = parseInt(image.getPixel(x, y), 16);
-        var valueStr = value.toString();
+    // TODO: allow for different depths
+    // if (!alpha) {
+    //   depth = 3;
+    // }
 
-        var r = parseInt(valueStr.substr(0,1), 10),
-            g = parseInt(valueStr.substr(2,3), 10),
-            b = parseInt(valueStr.substr(4,5), 10);
+    for (var i = 0; i < pixels.length; i+=depth) {
+      // just take the red value
+      pixelVal = pixels[i + 1] = pixels[i + 2] = pixels[i];
 
-        // if dithering is NOT preferred
-        if (!dither) {
-          // luminosity adjustments
-          var lumR = 0.299,
-              lumG = 0.587,
-              lumB = 0.114;
-          
-          // average out to a grey
-          value = Math.floor(((r * lumR) + (g * lumG) + (b * lumB)) / 3);
+        // do threshold for determining on and off pixel vals
+        if (pixelVal > threshold) {
+          pixelVal = 1;
         } else {
-          // dithered result has same value for every color channel (0 or 255), so r is fine
-          value = ((r + g + b) / 3);
+          pixelVal = 0;
         }
         
-        // weed out RGB depth to make just black or white pixel
-        if (value > 2000) {
-          value = 1;
-        } else {
-          value = 0;
-        }
-        unpackedBuffer[index] = value;
-      }
-    } 
+      // push to unpacked buffer list
+      unpackedBuffer[i/depth] = pixelVal;
+
+    }
 
     // time to pack the buffer
     for (var i = 0; i < unpackedBuffer.length; i++) {
+      // math
       var x = Math.floor(i % width);
       var y = Math.floor(i / width);
       var byte = 0,
           page = Math.floor(y / 8),
           pageShift = 0x01 << (y - 8 * page);
-      console.log('thresh ', x + ', ' + y, unpackedBuffer[i]);
 
       // is the first page?
       (page === 0) ? byte = x : byte = x + width * page; 
