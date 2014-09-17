@@ -24,9 +24,8 @@
   },
   "homepage": "https://github.com/noopkat/png-to-lcd",
   "dependencies": {
-    "png-js": "^0.1.1",
-    "reduce-image": "0.0.3",
-    "pngparse": "~2.0.1"
+    "pngparse": "~2.0.1",
+    "floyd-steinberg": "~1.0.4"
   },
   "devDependencies": {
     "tape": "~2.14.0"

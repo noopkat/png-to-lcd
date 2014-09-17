@@ -2,11 +2,12 @@
  * png-to-lcd
  * exports framebuffer for use with common OLED displays
  */
-var floydSteinberg = require('../floyd-steinberg');
+var floydSteinberg = require('floyd-steinberg');
 var pngparse = require('pngparse');
 
 module.exports = png_to_lcd;
 
+// pngparse doesn't quite have the correct object setup for pixel data
 function createImageData(image) {
   var buf = new Buffer(image.width * image.height * 4);
 
@@ -26,38 +27,34 @@ function createImageData(image) {
 
 function png_to_lcd(filename, dither, callback) {
 
+  // parse png file passed in
   pngparse.parseFile(filename, function(err, img) {
     if (err) {
       return callback(err);
     }
+    // post process pixel data returned
+    var pimage = createImageData(img);
 
-    var parrot = createImageData(img);
-
-    var pixels = parrot.data,
-        height = parrot.height,
-        width = parrot.width,
-        alpha = parrot.hasAlphaChannel,
+    var pixels = pimage.data,
+        pixelsLen = pixels.length
+        height = pimage.height,
+        width = pimage.width,
+        alpha = pimage.hasAlphaChannel,
         threshold = 120,
         unpackedBuffer = [],
         depth = 4;
 
-    // create a new buffer that will be filled with pixel bytes and then returned
+    // create a new buffer that will be filled with pixel bytes (8 bits per) and then returned
     var buffer = new Buffer((width * height) / 8);
     buffer.fill(0x00);
 
-    
-
     // if dithering is preferred, run this on the pixel data first to transform RGB vals
     if (dither) {
-      floydSteinberg(parrot);
+      floydSteinberg(pimage);
     }
 
-    // TODO: allow for different depths
-    // if (!alpha) {
-    //   depth = 3;
-    // }
-
-    for (var i = 0; i < pixels.length; i+=depth) {
+    // filter pixels to create monochrome image data
+    for (var i = 0; i < pixelsLen; i += depth) {
       // just take the red value
       pixelVal = pixels[i + 1] = pixels[i + 2] = pixels[i];
 
@@ -78,23 +75,25 @@ function png_to_lcd(filename, dither, callback) {
       // math
       var x = Math.floor(i % width);
       var y = Math.floor(i / width);
+
+      // create a new byte, set up page position
       var byte = 0,
           page = Math.floor(y / 8),
           pageShift = 0x01 << (y - 8 * page);
 
-      // is the first page?
+      // is the first page? Just assign byte pos to x value, otherwise add rows to it too
       (page === 0) ? byte = x : byte = x + width * page; 
       
       if (unpackedBuffer[i] === 0) {
-        // black or 'off' pixel
+        // 'off' pixel
         buffer[byte] &= ~pageShift;
         
       } else {
-        // white or 'on' pixel
+        // 'on' pixel
         buffer[byte] |= pageShift;
       }
     }
     
-    callback(null, buffer);
+    callback(err, buffer);
   });
 }
