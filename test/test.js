@@ -2,7 +2,7 @@ var test = require('tape');
 var pngtolcd = require('../png-to-lcd');
 
 test('should convert image to monochrome buffer', function(t) {
-  pngtolcd(__dirname + '/icecream.png', true, function(err, buffer) {
+  pngtolcd(__dirname + '/cat.png', true, function(err, buffer) {
     t.ok(!err);
     //console.log(buffer.toString('hex'));
 
