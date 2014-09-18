@@ -10,6 +10,11 @@ convert png image data into an lcd convertible framebuffer
 npm install png-to-lcd
 ```
 
+but for now:
+```
+git clone
+npm install
+```
 
 ## What does it do?
 png-to-lcd can consume a PNG image file, and returns the image data, formatted for LCD and OLED screens (an 8-bit/byte framebuffer). It's just monochrome support for now. It's especially been written to support SSD1306 OLED displays. You can buy these pretty cheaply on [Adafruit](http://www.adafruit.com/products/938) (my favourite), Sparkfun, eBay, and sites like Banggood. 
