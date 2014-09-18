@@ -62,7 +62,7 @@ Dithered 128 x 64 display example:
 Non dithered 128 x 32 display text example:  
 ![noopkat](https://raw.githubusercontent.com/noopkat/png-to-lcd/master/test/examples/noopkat-mono.png)
 
-## My images are not coming out perfect  (╯°□°）╯︵ ┻━┻
+## My images don't look perfect  (╯°□°）╯︵ ┻━┻
 That's understandable. A computer program will do its best to guess at the best optimizations, but it has little context for what the heck it's working on for you. You may find that some screen designs needs a little tweaking before it's perfect. 
 
 For non dithered pics - try nudging the pixels using just black and white only (no grey) in your image editor for best results before running it through this module.
