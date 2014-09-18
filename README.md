@@ -57,7 +57,7 @@ Dithered 128 x 32 display example:
 ![cat 128x32](https://raw.githubusercontent.com/noopkat/png-to-lcd/master/test/examples/mono-128x32.png)
 
 Dithered 128 x 64 display example:  
-![cat 128x32](https://raw.githubusercontent.com/noopkat/png-to-lcd/master/test/examples/mono-128x32.png)
+![cat 128x32](https://raw.githubusercontent.com/noopkat/png-to-lcd/master/test/examples/mono-128x64.png)
 
 Non dithered 128 x 32 display text example:  
 ![noopkat](https://raw.githubusercontent.com/noopkat/png-to-lcd/master/test/examples/noopkat-mono.png)
