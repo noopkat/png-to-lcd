@@ -42,7 +42,7 @@ pngtolcd('cat.png', true, function(err, buffer) {
 ## What the heck is dithering?
 Dithering is a method of diffusing pixels in order to avoid harsh edges or banding where the colours in an image contrast with each other. Fancy algorithms and stuff. 
 
-png-to-lcd uses the Floyd Steinberg algorithm specifically, as it produces the clearest images on a pixel screen in my experience.
+png-to-lcd uses the [Floyd Steinberg](https://github.com/noopkat/floyd-steinberg) algorithm specifically, as it produces the clearest images on a pixel screen in my experience.
 
 ## When should I opt to use dithering?
 If you're trying to convert a photo, or detailed image - use dithering! You'll retain more detail.
@@ -54,13 +54,13 @@ If you have crisp line detailing in your image, it's best not to dither as it ma
 Ok. You can make stuff like this.
 
 Dithered 128 x 32 display example:  
-![cat 128x32](mono-128x32.png)
+![cat 128x32](https://raw.githubusercontent.com/noopkat/png-to-lcd/master/test/examples/mono-128x32.png)
 
 Dithered 128 x 64 display example:  
-![cat 128x32](mono-128x32.png)
+![cat 128x32](https://raw.githubusercontent.com/noopkat/png-to-lcd/master/test/examples/mono-128x32.png)
 
 Non dithered 128 x 32 display text example:  
-![noopkat](noopkat-mono.png)
+![noopkat](https://raw.githubusercontent.com/noopkat/png-to-lcd/master/test/examples/noopkat-mono.png)
 
 ## My images are not coming out perfect  (╯°□°）╯︵ ┻━┻
 That's understandable. A computer program will do its best to guess at the best optimizations, but it has little context for what the heck it's working on for you. You may find that some screen designs needs a little tweaking before it's perfect. 
