@@ -10,6 +10,8 @@ test('should convert image to a buffer', function(t) {
   });
 });
 
+// commenting this out, as it's only because of the current monochome only support
+/*
 test('buffer should return monochrome pixel data', function(t) {
   pngtolcd(__dirname + '/cat.png', true, function(err, buffer) {
     t.ok(!err);
@@ -17,3 +19,4 @@ test('buffer should return monochrome pixel data', function(t) {
     t.end();
   });
 });
+*/
