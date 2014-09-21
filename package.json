@@ -15,7 +15,8 @@
     "png",
     "framebuffer",
     "oled",
-    "bitmap"
+    "bitmap",
+    "SSD1306"
   ],
   "author": "Suz Hinton",
   "license": "MIT",
