@@ -1,26 +1,18 @@
 png-to-lcd
 ==========
 
-convert png image data into an lcd convertible framebuffer
+Convert a PNG image into an LCD/OLED convertible framebuffer
 
-(still in development, not published to npm yet)
-
-## Install (SOON)
+## Install
 ```javascript
 npm install png-to-lcd
 ```
 
-but for now:
-```
-git clone
-npm install
-```
-
 ## What does it do?
-png-to-lcd can consume a PNG image file, and returns the image data, formatted for LCD and OLED screens (an 8-bit/byte framebuffer). It's just monochrome support for now. It's especially been written to support SSD1306 OLED displays. You can buy these pretty cheaply on [Adafruit](http://www.adafruit.com/products/938) (my favourite), Sparkfun, eBay, and sites like Banggood. 
+png-to-lcd consumes a PNG image file, and returns the image data, formatted for LCD and OLED screens (an 8-bit/byte framebuffer). It's just monochrome support for now. It's especially been written to support SSD1306 OLED displays. You can buy these pretty cheaply on [Adafruit](http://www.adafruit.com/products/938) (my favourite), Sparkfun, eBay, and sites like Banggood. 
 
 ## What doesn't it do?
-Image prep - the image you pass in should be an RGBA PNG, and sized to the exact dimensions of the screen you'd like to use. So if your screen is 128x64 pixels, size it so in your image editor of choice. 
+Image prep - the image you pass in should be an RGBA PNG (both colour and greytone are acceptable), and sized to the exact dimensions of the screen you'd like to use. So if your screen is 128x64 pixels, size it so in your image editor of choice. 
 
 I suggest [Pixelmator](http://www.pixelmator.com), [Acorn](http://www.flyingmeat.com/acorn), or [GIMP](http://www.gimp.org) if you're into desktop software. Alternatively, if you're into super awesome software made in the browser by a badass, try [Jenn Schiffer's](http://twitter.com/jennschiffer) noice [make8bitart.com](http://make8bitart.com), which is really quite suitable for this kind of low res screen design.
 
