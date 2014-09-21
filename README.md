@@ -1,7 +1,7 @@
 png-to-lcd
 ==========
 
-Convert a PNG image into an LCD/OLED convertible framebuffer
+Convert a PNG image into an LCD/OLED compatible framebuffer
 
 ## Install
 ```javascript
