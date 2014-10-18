@@ -1,4 +1,4 @@
-!['npm version'](http://img.shields.io/npm/v/png-to-lcd.svg?style=flat) !['github issues'](http://img.shields.io/github/issues/noopkat/png-to-lcd.svg?style=flat) !['downloads over month'](http://img.shields.io/npm/dm/png-to-lcd.svg?style=flat)
+!['npm version'](http://img.shields.io/npm/v/png-to-lcd.svg?style=flat) !['downloads over month'](http://img.shields.io/npm/dm/png-to-lcd.svg?style=flat)
 
 png-to-lcd
 ==========
