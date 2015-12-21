@@ -36,7 +36,7 @@ function png_to_lcd(filename, dither, callback) {
     var pimage = createImageData(img);
 
     var pixels = pimage.data,
-        pixelsLen = pixels.length
+        pixelsLen = pixels.length,
         height = pimage.height,
         width = pimage.width,
         alpha = pimage.hasAlphaChannel,
@@ -56,7 +56,7 @@ function png_to_lcd(filename, dither, callback) {
     // filter pixels to create monochrome image data
     for (var i = 0; i < pixelsLen; i += depth) {
       // just take the red value
-      pixelVal = pixels[i + 1] = pixels[i + 2] = pixels[i];
+      var pixelVal = pixels[i + 1] = pixels[i + 2] = pixels[i];
 
         // do threshold for determining on and off pixel vals
         if (pixelVal > threshold) {
