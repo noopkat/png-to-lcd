@@ -1,6 +1,6 @@
 {
   "name": "png-to-lcd",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "convert png image data into an lcd compatible framebuffer",
   "main": "png-to-lcd.js",
   "scripts": {
