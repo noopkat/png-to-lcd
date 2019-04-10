@@ -11,7 +11,7 @@ npm install png-to-lcd
 ```
 
 ## What does it do?
-png-to-lcd consumes a PNG image file, and returns the image data, formatted for LCD and OLED screens (an 8-bit/byte framebuffer). It's just monochrome support for now. It's especially been written to support SSD1306 OLED displays. You can buy these pretty cheaply on [Adafruit](http://www.adafruit.com/products/938) (my favourite), Sparkfun, eBay, and sites like Banggood. 
+png-to-lcd consumes a PNG image file, and returns the image data, formatted for OLED screens (an 8-bit/byte framebuffer). It's just monochrome support for now. **It only supports [SSD1306 OLED displays](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)**. You can buy these pretty cheaply on [Adafruit](http://www.adafruit.com/products/938) (my favourite), Sparkfun, eBay, and sites like Banggood. 
 
 ## What doesn't it do?
 Image prep - the image you pass in should be an RGBA PNG (both colour and greytone are acceptable), and sized to the exact dimensions of the screen you'd like to use. So if your screen is 128x64 pixels, size it so in your image editor of choice. 
