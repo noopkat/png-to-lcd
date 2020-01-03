@@ -45,7 +45,7 @@ function png_to_lcd(filename, dither, callback) {
         depth = 4;
 
     // create a new buffer that will be filled with pixel bytes (8 bits per) and then returned
-    var buffer = new Buffer((width * height) / 8);
+    var buffer = new Buffer(width * Math.ceil(height / 8));
     buffer.fill(0x00);
 
     // if dithering is preferred, run this on the pixel data first to transform RGB vals
