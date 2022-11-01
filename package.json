@@ -29,6 +29,6 @@
     "floyd-steinberg": "~1.0.4"
   },
   "devDependencies": {
-    "tape": "~2.14.0"
+    "tape": "~5.6.1"
   }
 }
